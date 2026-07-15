@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stream Ops Tools — StreamMod &amp; Cuelist</title>
+<meta name="description" content="StreamMod, a live moderation dashboard for Twitch, YouTube &amp; Discord, and Cuelist, an OBS now-playing &amp; marathon-timer overlay. Two free tools built for running a stream.">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="stylesheet" href="css/style.css?v=3">
+</head>
+<body>
+
+<header class="nav">
+  <a class="nav__brand" href="#top">
+    <img src="assets/logos/site-mark.svg" alt="" width="28" height="28">
+    <span>Stream Ops Tools</span>
+  </a>
+  <nav class="nav__links">
+    <a href="#streammod">StreamMod</a>
+    <a href="#cuelist">Cuelist</a>
+    <a href="https://github.com/Dragonsniper43/Mod-Dashboard-Releases" target="_blank" rel="noopener">GitHub</a>
+  </nav>
+</header>
+
+<main id="top">
+
+  <section id="hero" class="hero">
+    <div class="hero__blobs" aria-hidden="true">
+      <span class="blob blob--a"></span>
+      <span class="blob blob--b"></span>
+      <span class="blob blob--c"></span>
+    </div>
+    <div class="hero__content">
+      <p class="eyebrow reveal">Two tools, one stream setup</p>
+      <h1 class="reveal" style="--i:1">Built for running a stream,<br>not just watching one.</h1>
+      <p class="hero__sub reveal" style="--i:2">
+        <strong>StreamMod</strong> keeps your chat, Discord and VLC playback in one panel.
+        <strong>Cuelist</strong> keeps your OBS overlay honest — now-playing, marathon timers, and alerts.
+      </p>
+      <div class="hero__cta reveal" style="--i:3">
+        <a class="btn btn--primary" href="#streammod">Explore StreamMod</a>
+        <a class="btn btn--ghost" href="#cuelist">Explore Cuelist</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="streammod" class="app-section">
+    <div class="app-section__intro reveal">
+      <img class="app-lockup" src="assets/logos/streammod-lockup.svg" alt="StreamMod" height="48">
+      <p class="app-tagline">A lightweight desktop dashboard for moderating Twitch (and YouTube) live chats, watching a Discord mod channel, and controlling VLC playback — all from one panel.</p>
+      <span class="version-badge version-badge--violet" id="streammod-version-badge">v1.0.19</span>
+    </div>
+
+    <div class="app-section__shot reveal" style="--i:1">
+      <div class="window-frame">
+        <div class="window-frame__bar"><span></span><span></span><span></span></div>
+        <img src="assets/screenshots/streammod-panel.png" alt="StreamMod panel layout showing live chat, mod actions and VLC controls" onerror="this.src='assets/logos/placeholder-panel.svg'">
+      </div>
+    </div>
+
+    <div class="feature-grid">
+      <article class="card reveal" style="--i:1">
+        <h3>Unified live chat</h3>
+        <p>Twitch and YouTube chat side by side, with EventSub alerts for subs, bits and raids as they happen.</p>
+      </article>
+      <article class="card reveal" style="--i:2">
+        <h3>Discord relay</h3>
+        <p>A mod-channel panel that reads and sends Discord messages, and relays every ban, timeout and warn back to your team.</p>
+      </article>
+      <article class="card reveal" style="--i:3">
+        <h3>VLC playback &amp; playlist</h3>
+        <p>Control local media straight from the dashboard, browse the full playlist, with chat-driven song requests built in.</p>
+      </article>
+      <article class="card reveal" style="--i:4">
+        <h3>One-click mod actions</h3>
+        <p>Warn, timeout or ban, and toggle slow / sub-only / emote-only / followers-only mode without leaving the panel.</p>
+      </article>
+      <article class="card reveal" style="--i:5">
+        <h3>AutoMod queue</h3>
+        <p>Held messages land in a review queue with one-tap approve or deny — nothing gets buried in chat.</p>
+      </article>
+      <article class="card reveal" style="--i:6">
+        <h3>Layouts that stick</h3>
+        <p>Drag and resize every panel, then save the arrangement as a Profile you can switch back to anytime.</p>
+      </article>
+      <article class="card reveal" style="--i:7">
+        <h3>Sound alerts &amp; automations</h3>
+        <p>Redeem- or command-triggered OBS overlay alerts, plus automations like auto-announcing when a channel goes live.</p>
+      </article>
+      <article class="card reveal" style="--i:8">
+        <h3>Deep, tabbed settings</h3>
+        <p>15+ settings tabs — Twitch, YouTube, Discord, Moderation, VLC, Marathon Timer, Automations and more — all in one panel.</p>
+      </article>
+    </div>
+
+    <div class="gallery-grid">
+      <figure class="gallery-item reveal" style="--i:1">
+        <div class="window-frame window-frame--sm">
+          <div class="window-frame__bar"><span></span><span></span><span></span></div>
+          <img src="assets/screenshots/streammod-discord.png" alt="Discord mod-channel panel open alongside live chat" onerror="this.src='assets/logos/placeholder-panel.svg'">
+        </div>
+        <figcaption>Discord relay panel, live next to chat</figcaption>
+      </figure>
+      <figure class="gallery-item reveal" style="--i:2">
+        <div class="window-frame window-frame--sm">
+          <div class="window-frame__bar"><span></span><span></span><span></span></div>
+          <img src="assets/screenshots/streammod-automod.png" alt="AutoMod queue with held messages awaiting approve or deny" onerror="this.src='assets/logos/placeholder-panel.svg'">
+        </div>
+        <figcaption>AutoMod queue — approve or deny in one tap</figcaption>
+      </figure>
+      <figure class="gallery-item reveal" style="--i:3">
+        <div class="window-frame window-frame--sm">
+          <div class="window-frame__bar"><span></span><span></span><span></span></div>
+          <img src="assets/screenshots/streammod-modactions.png" alt="Chat feed with always-visible warn, timeout, ban and delete buttons" onerror="this.src='assets/logos/placeholder-panel.svg'">
+        </div>
+        <figcaption>Always-visible mod actions on every message</figcaption>
+      </figure>
+      <figure class="gallery-item reveal" style="--i:4">
+        <div class="window-frame window-frame--sm">
+          <div class="window-frame__bar"><span></span><span></span><span></span></div>
+          <img src="assets/screenshots/streammod-playlist.png" alt="VLC playlist panel showing the full track list" onerror="this.src='assets/logos/placeholder-panel.svg'">
+        </div>
+        <figcaption>Full VLC playlist, browsable mid-stream</figcaption>
+      </figure>
+      <figure class="gallery-item reveal" style="--i:5">
+        <div class="window-frame window-frame--sm">
+          <div class="window-frame__bar"><span></span><span></span><span></span></div>
+          <img src="assets/screenshots/streammod-settings.png" alt="Settings panel showing the Automations tab and full tab list" onerror="this.src='assets/logos/placeholder-panel.svg'">
+        </div>
+        <figcaption>Automations, plus 15+ other settings tabs</figcaption>
+      </figure>
+    </div>
+
+    <div class="app-section__cta reveal">
+      <a class="btn btn--disabled" aria-disabled="true" tabindex="-1" id="streammod-download-btn">
+        Download StreamMod <span class="badge">Public release coming soon</span>
+      </a>
+      <a class="btn btn--ghost" href="https://github.com/Dragonsniper43/Mod-Dashboard-Releases" target="_blank" rel="noopener">Follow on GitHub</a>
+    </div>
+  </section>
+
+  <section id="cuelist" class="app-section">
+    <div class="app-section__intro reveal">
+      <img class="app-lockup" src="assets/logos/cuelist-lockup.svg" alt="Cuelist" height="48">
+      <p class="app-tagline">An OBS overlay for now-playing, marathon streams, and alerts — configured entirely from your browser, no code required.</p>
+      <span class="version-badge version-badge--teal">v0.2.1</span>
+    </div>
+
+    <div class="app-section__shot reveal" style="--i:1">
+      <div class="window-frame">
+        <div class="window-frame__bar"><span></span><span></span><span></span></div>
+        <img src="assets/screenshots/cuelist-overlay.png" alt="Cuelist now-playing overlay and marathon timer" onerror="this.src='assets/logos/placeholder-panel.svg'">
+      </div>
+    </div>
+
+    <div class="feature-grid">
+      <article class="card reveal" style="--i:1">
+        <h3>Now playing, auto-switched</h3>
+        <p>Shows what's playing in VLC or Spotify, with VLC taking priority whenever it's active.</p>
+      </article>
+      <article class="card reveal" style="--i:2">
+        <h3>Coming Up rotation</h3>
+        <p>A rotating "what's next" list keeps your overlay useful even between tracks.</p>
+      </article>
+      <article class="card reveal" style="--i:3">
+        <h3>Auto stream-title updates</h3>
+        <p>Your Twitch title updates itself the moment a new video starts — no manual editing mid-stream.</p>
+      </article>
+      <article class="card reveal" style="--i:4">
+        <h3>Marathon Timer</h3>
+        <p>Built for 30+ day unattended marathon streams, with event history that survives restarts.</p>
+      </article>
+      <article class="card reveal" style="--i:5">
+        <h3>Alert Widget</h3>
+        <p>A dedicated overlay for subs, bits and donations, styled to match the rest of your scene.</p>
+      </article>
+      <article class="card reveal" style="--i:6">
+        <h3>Zero-code setup</h3>
+        <p>Everything is configured through a browser settings page — never touch a config file.</p>
+      </article>
+    </div>
+
+    <div class="gallery-grid">
+      <figure class="gallery-item reveal" style="--i:1">
+        <div class="window-frame window-frame--sm">
+          <div class="window-frame__bar"><span></span><span></span><span></span></div>
+          <img src="assets/screenshots/cuelist-timer.png" alt="Marathon Timer widget showing an in-progress multi-day countdown" onerror="this.src='assets/logos/placeholder-panel.svg'">
+        </div>
+        <figcaption>Marathon Timer, built for multi-day streams</figcaption>
+      </figure>
+      <figure class="gallery-item reveal" style="--i:2">
+        <div class="window-frame window-frame--sm">
+          <div class="window-frame__bar"><span></span><span></span><span></span></div>
+          <img src="assets/screenshots/cuelist-alert.png" alt="Alert Widget flashing a colored border for a subscriber event" onerror="this.src='assets/logos/placeholder-panel.svg'">
+        </div>
+        <figcaption>Alert Widget — a full-scene border flash per event</figcaption>
+      </figure>
+      <figure class="gallery-item reveal" style="--i:3">
+        <div class="window-frame window-frame--sm">
+          <div class="window-frame__bar"><span></span><span></span><span></span></div>
+          <img src="assets/screenshots/cuelist-chat.png" alt="Chat overlay widget showing Twitch and YouTube messages together" onerror="this.src='assets/logos/placeholder-panel.svg'">
+        </div>
+        <figcaption>Twitch + YouTube chat, as an OBS overlay</figcaption>
+      </figure>
+      <figure class="gallery-item reveal" style="--i:4">
+        <div class="window-frame window-frame--sm">
+          <div class="window-frame__bar"><span></span><span></span><span></span></div>
+          <img src="assets/screenshots/cuelist-config.png" alt="Browser-based settings page with live preview and no config file editing" onerror="this.src='assets/logos/placeholder-panel.svg'">
+        </div>
+        <figcaption>Every pixel tunable, with a live preview</figcaption>
+      </figure>
+    </div>
+
+    <div class="app-section__cta reveal">
+      <a class="btn btn--disabled" aria-disabled="true" tabindex="-1">
+        Download Cuelist <span class="badge">Public release coming soon</span>
+      </a>
+      <!-- TODO: once the public releases repo ships, replace with:
+           <a class="btn btn--primary" href="https://github.com/martintTock/cuelist-releases/releases/latest">Download Cuelist</a> -->
+      <a class="btn btn--ghost" href="https://github.com/Dragonsniper43/Mod-Dashboard-Releases" target="_blank" rel="noopener">Follow on GitHub</a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <p>Built by a solo developer, for running the stream in the other window.</p>
+  <div class="site-footer__links">
+    <a href="https://github.com/Dragonsniper43/Mod-Dashboard-Releases" target="_blank" rel="noopener">GitHub</a>
+    <a href="privacy-policy.html">Privacy Policy</a>
+    <a href="#top">Back to top</a>
+  </div>
+  <p class="site-footer__copyright">&copy; <span id="year"></span> Stream Ops Tools</p>
+</footer>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox__close" aria-label="Close enlarged screenshot">✕</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<script src="js/main.js?v=9"></script>
+</body>
+</html>

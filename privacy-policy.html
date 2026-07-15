@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy — Stream Ops Tools</title>
+<meta name="description" content="Privacy Policy for StreamMod and Cuelist, covering local data storage and Twitch, Google/YouTube and Discord API use.">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="stylesheet" href="css/style.css?v=3">
+<style>
+  .legal {
+    max-width: 760px;
+    margin: 0 auto;
+    padding-top: 7rem;
+    padding-bottom: 5rem;
+  }
+  .legal h1 { font-size: clamp(1.8rem, 4vw, 2.4rem); margin-bottom: .5rem; }
+  .legal .eyebrow { margin-bottom: 1.5rem; }
+  .legal h2 { font-size: 1.15rem; margin: 2.5rem 0 .75rem; }
+  .legal p, .legal li { color: var(--text-dim); font-size: .98rem; }
+  .legal ul { padding-left: 1.25rem; }
+  .legal li { margin-bottom: .5rem; }
+  .legal a { color: var(--text); text-decoration: underline; text-decoration-color: var(--border); }
+  .legal a:hover { text-decoration-color: var(--text); }
+  .legal code {
+    background: rgba(231, 233, 238, .08);
+    border-radius: 4px;
+    padding: .1rem .35rem;
+    font-size: .9em;
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <a class="nav__brand" href="index.html">
+    <img src="assets/logos/site-mark.svg" alt="" width="28" height="28">
+    <span>Stream Ops Tools</span>
+  </a>
+  <nav class="nav__links">
+    <a href="index.html#streammod">StreamMod</a>
+    <a href="index.html#cuelist">Cuelist</a>
+    <a href="https://github.com/Dragonsniper43/Mod-Dashboard-Releases" target="_blank" rel="noopener">GitHub</a>
+  </nav>
+</header>
+
+<main>
+  <section class="legal">
+    <p class="eyebrow">Legal</p>
+    <h1>Privacy Policy</h1>
+    <p><strong>Effective date:</strong> July 15, 2026</p>
+    <p>This policy covers both desktop applications built and distributed by this developer: <strong>StreamMod</strong> (a Twitch/YouTube/Discord moderation dashboard) and <strong>Cuelist</strong> (an OBS overlay tool). Both are referred to below as "the app."</p>
+
+    <h2>There is no app server</h2>
+    <p>The app runs entirely on your own computer. There is no backend operated by this developer that your data passes through. Settings, OAuth tokens and cached state are stored only in a local file on your machine, at <code>%LOCALAPPDATA%\StreamMod\mod_config.json</code> (StreamMod) or the equivalent local config location for Cuelist. Nothing in that file is uploaded anywhere by the app itself.</p>
+
+    <h2>Third-party services the app connects to</h2>
+    <p>When you connect an account, the app talks directly to that provider's own API using your own credentials. No traffic is proxied through this developer.</p>
+    <ul>
+      <li><strong>Twitch</strong> — chat read/write and moderation actions (timeouts, bans, AutoMod queue, channel settings) that you explicitly trigger.</li>
+      <li><strong>Google / YouTube Data API</strong> — requests the scope <code>https://www.googleapis.com/auth/youtube</code>, used only to read your channel's live chat and post messages to it on your behalf. Sign-in uses Google's OAuth device authorization flow (the same mechanism used by TVs and set-top boxes); your Google password is never seen by the app.</li>
+      <li><strong>Discord</strong> — reads and sends messages in a mod channel you configure, using a token you provide.</li>
+    </ul>
+    <p>StreamMod's use and transfer of information received from Google APIs adheres to the <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener">Google API Services User Data Policy</a>, including the Limited Use requirements.</p>
+
+    <h2>What we don't do</h2>
+    <ul>
+      <li>We don't sell, rent, or share your data with any third party.</li>
+      <li>We don't use Google user data for advertising.</li>
+      <li>We don't have analytics or telemetry that reports your activity back to this developer.</li>
+    </ul>
+
+    <h2>Your control over the data</h2>
+    <ul>
+      <li>Delete <code>%LOCALAPPDATA%\StreamMod</code> (or the equivalent Cuelist folder) at any time to remove all locally stored config and tokens.</li>
+      <li>Revoke the app's access anytime from your <a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener">Google Account permissions</a>, <a href="https://www.twitch.tv/settings/connections" target="_blank" rel="noopener">Twitch connections</a>, or Discord application settings.</li>
+    </ul>
+
+    <h2>Changes to this policy</h2>
+    <p>If this policy changes, the effective date above will be updated. Material changes affecting Google user data will be reflected here before taking effect.</p>
+
+    <h2>Contact</h2>
+    <p>Questions about this policy or your data: <a href="mailto:martintomprompt@gmail.com">dragonsniper</a></p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p>Built by a solo developer, for running the stream in the other window.</p>
+  <div class="site-footer__links">
+    <a href="https://github.com/Dragonsniper43/Mod-Dashboard-Releases" target="_blank" rel="noopener">GitHub</a>
+    <a href="index.html">Back to home</a>
+  </div>
+  <p class="site-footer__copyright">&copy; 2026 Stream Ops Tools</p>
+</footer>
+
+</body>
+</html>

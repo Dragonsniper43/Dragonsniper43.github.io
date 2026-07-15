@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" role="img" aria-label="StreamMod mark">
+  <rect x="5" y="5" width="26" height="21" rx="5" fill="#8b5cf6"/>
+  <rect x="35" y="5" width="24" height="13" rx="5" fill="#e7e9ee" fill-opacity=".14"/>
+  <rect x="5" y="30" width="15" height="29" rx="5" fill="#e7e9ee" fill-opacity=".14"/>
+  <rect x="24" y="21" width="35" height="38" rx="5" fill="none" stroke="#8b5cf6" stroke-width="2.5"/>
+  <rect x="24" y="21" width="35" height="38" rx="5" fill="#8b5cf6" fill-opacity=".18"/>
+</svg>
