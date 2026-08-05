@@ -172,5 +172,31 @@
     });
   });
 
+  // Poll for new/updated tickets so the list updates on its own for anyone
+  // with the page open, not just the person who just submitted. Paused while
+  // the tab isn't visible so idle background tabs don't keep polling.
+  var POLL_INTERVAL_MS = 45000;
+  var pollTimer = null;
+
+  function startPolling() {
+    if (pollTimer) return;
+    pollTimer = setInterval(loadTickets, POLL_INTERVAL_MS);
+  }
+
+  function stopPolling() {
+    clearInterval(pollTimer);
+    pollTimer = null;
+  }
+
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) {
+      stopPolling();
+    } else {
+      loadTickets();
+      startPolling();
+    }
+  });
+
   loadTickets();
+  if (!document.hidden) startPolling();
 })();
