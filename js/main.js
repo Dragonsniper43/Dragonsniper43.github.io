@@ -53,23 +53,25 @@
     if (lastFocused) lastFocused.focus();
   }
 
-  document.querySelectorAll('.window-frame img').forEach(function (img) {
-    img.tabIndex = 0;
-    img.setAttribute('role', 'button');
-    img.setAttribute('aria-label', 'Enlarge screenshot');
-    img.addEventListener('click', function () { openLightbox(img); });
-    img.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(img); }
+  if (lightbox) {
+    document.querySelectorAll('.window-frame img').forEach(function (img) {
+      img.tabIndex = 0;
+      img.setAttribute('role', 'button');
+      img.setAttribute('aria-label', 'Enlarge screenshot');
+      img.addEventListener('click', function () { openLightbox(img); });
+      img.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(img); }
+      });
     });
-  });
 
-  lightbox.addEventListener('click', function (e) {
-    if (e.target === lightbox) closeLightbox();
-  });
-  lightbox.querySelector('.lightbox__close').addEventListener('click', closeLightbox);
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && lightbox.classList.contains('is-open')) closeLightbox();
-  });
+    lightbox.addEventListener('click', function (e) {
+      if (e.target === lightbox) closeLightbox();
+    });
+    lightbox.querySelector('.lightbox__close').addEventListener('click', closeLightbox);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && lightbox.classList.contains('is-open')) closeLightbox();
+    });
+  }
 
   // StreamMod download button + version badge, sourced live from the public
   // releases repo — asset filenames are versioned, so a static link isn't

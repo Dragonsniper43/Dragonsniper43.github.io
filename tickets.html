@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Report a Bug — Stream Ops Tools</title>
+<meta name="description" content="Report a bug or request a change for StreamMod or Cuelist, and track ticket status and release notes.">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="stylesheet" href="css/style.css?v=3">
+<link rel="stylesheet" href="css/tickets.css?v=1">
+</head>
+<body>
+
+<header class="nav">
+  <a class="nav__brand" href="index.html">
+    <img src="assets/logos/site-mark.svg" alt="" width="28" height="28">
+    <span>Stream Ops Tools</span>
+  </a>
+  <nav class="nav__links">
+    <a href="index.html#streammod">StreamMod</a>
+    <a href="index.html#cuelist">Cuelist</a>
+    <a href="tickets.html">Report a Bug</a>
+    <a href="https://github.com/Dragonsniper43/Mod-Dashboard-Releases" target="_blank" rel="noopener">GitHub</a>
+  </nav>
+</header>
+
+<main>
+
+  <section class="ticket-section ticket-intro">
+    <p class="eyebrow reveal">Support</p>
+    <h1 class="reveal" style="--i:1">Report a bug or request a change</h1>
+    <p class="app-tagline reveal" style="--i:2">
+      No account needed — submissions are posted anonymously as tickets on the public tracker below.
+      You can also see what's in triage, what's being worked on, and what shipped with its release notes.
+    </p>
+  </section>
+
+  <section class="ticket-section reveal" style="--i:1">
+    <div class="ticket-form-card">
+      <h2>Submit a ticket</h2>
+      <form id="ticket-form" novalidate>
+        <div class="form-row">
+          <div class="form-field">
+            <label for="ticket-type">Type</label>
+            <select id="ticket-type" name="type" required>
+              <option value="bug">Bug report</option>
+              <option value="change-request">Change request</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="ticket-app">App</label>
+            <select id="ticket-app" name="app" required>
+              <option value="streammod">StreamMod</option>
+              <option value="cuelist">Cuelist</option>
+              <option value="other">Other / not sure</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="ticket-title">Title</label>
+          <input type="text" id="ticket-title" name="title" maxlength="120" placeholder="Short summary of the issue or request" required>
+        </div>
+
+        <div class="form-field">
+          <label for="ticket-description">Description</label>
+          <textarea id="ticket-description" name="description" rows="6" placeholder="What happened, what you expected, and steps to reproduce (for bugs) or what you'd like to see (for change requests)." required></textarea>
+        </div>
+
+        <div class="form-field">
+          <label for="ticket-version">App version <span class="form-field__optional">(optional)</span></label>
+          <input type="text" id="ticket-version" name="version" maxlength="40" placeholder="e.g. v1.0.19">
+        </div>
+
+        <!-- Honeypot: left blank by humans, tends to get auto-filled by bots -->
+        <div class="form-field form-field--honeypot" aria-hidden="true">
+          <label for="ticket-website">Website</label>
+          <input type="text" id="ticket-website" name="website" tabindex="-1" autocomplete="off">
+        </div>
+
+        <div class="form-field">
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAAEHKNWu5AtYMvPap" data-action="submit_ticket"></div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn--primary" id="ticket-submit-btn">Submit ticket</button>
+          <span class="form-result" id="ticket-form-result" role="status" aria-live="polite"></span>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <section class="ticket-section reveal" style="--i:2">
+    <div class="ticket-list-header">
+      <h2>Open tickets</h2>
+      <div class="ticket-filters" role="tablist" aria-label="Filter tickets by type">
+        <button type="button" class="ticket-filter is-active" data-filter="all" role="tab" aria-selected="true">All</button>
+        <button type="button" class="ticket-filter" data-filter="bug" role="tab" aria-selected="false">Bugs</button>
+        <button type="button" class="ticket-filter" data-filter="change-request" role="tab" aria-selected="false">Change requests</button>
+      </div>
+    </div>
+
+    <div id="ticket-list" class="ticket-list" aria-live="polite">
+      <p class="ticket-list__state">Loading tickets…</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <p>Built by a solo developer, for running the stream in the other window.</p>
+  <div class="site-footer__links">
+    <a href="tickets.html">Report a Bug</a>
+    <a href="https://github.com/Dragonsniper43/Mod-Dashboard-Releases" target="_blank" rel="noopener">GitHub</a>
+    <a href="privacy-policy.html">Privacy Policy</a>
+    <a href="index.html">Back to home</a>
+  </div>
+  <p class="site-footer__copyright">&copy; <span id="year"></span> Stream Ops Tools</p>
+</footer>
+
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<script src="js/main.js?v=9"></script>
+<script src="js/tickets.js?v=1"></script>
+</body>
+</html>
