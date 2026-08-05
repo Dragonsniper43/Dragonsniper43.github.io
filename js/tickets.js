@@ -148,7 +148,7 @@
 
     listEl.innerHTML = '<p class="ticket-list__state">Loading tickets…</p>';
 
-    fetch(WORKER_BASE + '/api/tickets')
+    fetch(WORKER_BASE + '/api/tickets', { cache: 'no-store' })
       .then(function (res) { if (!res.ok) throw new Error('bad status'); return res.json(); })
       .then(function (body) {
         if (!body.ok) throw new Error('bad response');
