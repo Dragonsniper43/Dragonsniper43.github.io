@@ -139,7 +139,7 @@
           }
           form.reset();
           setImageHint(null, '');
-          setResult('success', 'Thanks — ticket #' + result.body.issueNumber + ' filed. It’ll show up in the list below shortly.');
+          setResult('success', 'Thanks — ticket #' + result.body.issueNumber + ' filed. Save that number to find it again — it’ll show up in the list below shortly.');
           loadTickets();
         })
         .catch(function () {
@@ -188,6 +188,7 @@
 
     return '<a class="ticket-card" href="' + t.url + '" target="_blank" rel="noopener">' +
       '<div class="ticket-card__header">' +
+      '<span class="ticket-card__number">#' + t.number + '</span>' +
       '<span class="ticket-card__title">' + escapeHtml(t.title) + '</span>' +
       typeBadge + statusBadge +
       '</div>' +

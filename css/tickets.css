@@ -272,6 +272,13 @@
   margin-bottom: .5rem;
 }
 
+.ticket-card__number {
+  font-size: .82rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
 .ticket-card__title {
   font-weight: 600;
   font-size: .98rem;
