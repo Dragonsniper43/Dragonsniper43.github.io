@@ -72,6 +72,12 @@
           <input type="text" id="ticket-version" name="version" maxlength="40" placeholder="e.g. v1.0.19">
         </div>
 
+        <div class="form-field">
+          <label for="ticket-image">Screenshot <span class="form-field__optional">(optional, max 5MB)</span></label>
+          <input type="file" id="ticket-image" name="image" accept="image/png,image/jpeg,image/webp,image/gif">
+          <span class="form-field__hint" id="ticket-image-hint"></span>
+        </div>
+
         <!-- Honeypot: left blank by humans, tends to get auto-filled by bots -->
         <div class="form-field form-field--honeypot" aria-hidden="true">
           <label for="ticket-website">Website</label>

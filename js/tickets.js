@@ -22,6 +22,11 @@
   var form = document.getElementById('ticket-form');
   var submitBtn = document.getElementById('ticket-submit-btn');
   var resultEl = document.getElementById('ticket-form-result');
+  var imageInput = document.getElementById('ticket-image');
+  var imageHint = document.getElementById('ticket-image-hint');
+
+  var MAX_IMAGE_BYTES = 5 * 1024 * 1024;
+  var ALLOWED_IMAGE_TYPES = ['image/png', 'image/jpeg', 'image/webp', 'image/gif'];
 
   function setResult(state, message) {
     resultEl.textContent = message;
@@ -30,6 +35,51 @@
     } else {
       resultEl.removeAttribute('data-state');
     }
+  }
+
+  function setImageHint(state, message) {
+    if (!imageHint) return;
+    imageHint.textContent = message || '';
+    if (state) {
+      imageHint.setAttribute('data-state', state);
+    } else {
+      imageHint.removeAttribute('data-state');
+    }
+  }
+
+  if (imageInput) {
+    imageInput.addEventListener('change', function () {
+      var file = imageInput.files[0];
+      if (!file) {
+        setImageHint(null, '');
+        return;
+      }
+      if (ALLOWED_IMAGE_TYPES.indexOf(file.type) === -1) {
+        setImageHint('error', 'Unsupported file type — use PNG, JPEG, WEBP or GIF.');
+        imageInput.value = '';
+        return;
+      }
+      if (file.size > MAX_IMAGE_BYTES) {
+        setImageHint('error', 'That file is too large — max 5MB.');
+        imageInput.value = '';
+        return;
+      }
+      setImageHint(null, file.name + ' (' + Math.round(file.size / 1024) + ' KB)');
+    });
+  }
+
+  // Resolves to a data: URL for the selected screenshot, or null if none was
+  // chosen. The Worker expects the image inline as base64 JSON rather than a
+  // separate upload step.
+  function readSelectedImage() {
+    var file = imageInput && imageInput.files[0];
+    if (!file) return Promise.resolve(null);
+    return new Promise(function (resolve, reject) {
+      var reader = new FileReader();
+      reader.onload = function () { resolve(reader.result); };
+      reader.onerror = function () { reject(new Error('image read failed')); };
+      reader.readAsDataURL(file);
+    });
   }
 
   if (form) {
@@ -62,17 +112,22 @@
       submitBtn.disabled = true;
       setResult(null, 'Submitting…');
 
-      fetch(WORKER_BASE + '/api/tickets', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      })
+      readSelectedImage()
+        .then(function (imageDataUrl) {
+          if (imageDataUrl) payload.image = imageDataUrl;
+          return fetch(WORKER_BASE + '/api/tickets', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+        })
         .then(function (res) { return res.json().then(function (body) { return { ok: res.ok, body: body }; }); })
         .then(function (result) {
           if (!result.ok || !result.body || !result.body.ok) {
             throw new Error((result.body && result.body.error) || 'submit failed');
           }
           form.reset();
+          setImageHint(null, '');
           setResult('success', 'Thanks — ticket #' + result.body.issueNumber + ' filed. It’ll show up in the list below shortly.');
           loadTickets();
         })
