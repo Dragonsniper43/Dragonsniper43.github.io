@@ -164,6 +164,78 @@
   border-color: var(--text);
 }
 
+.ticket-search {
+  margin-bottom: 1.5rem;
+}
+
+.ticket-search input[type="search"] {
+  width: 100%;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: .65rem .9rem;
+  color: var(--text);
+  font: inherit;
+  font-size: .92rem;
+  transition: border-color .2s ease;
+}
+
+.ticket-search input[type="search"]:focus {
+  outline: none;
+  border-color: var(--accent-cuelist);
+}
+
+.ticket-group-heading {
+  font-size: .78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--text-dim);
+  margin: 0 0 .75rem;
+}
+
+.ticket-group-closed {
+  margin-top: 1.75rem;
+}
+
+.ticket-group-closed summary.ticket-group-heading {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  margin-bottom: 0;
+}
+
+.ticket-group-closed summary.ticket-group-heading::-webkit-details-marker {
+  display: none;
+}
+
+.ticket-group-closed summary.ticket-group-heading::before {
+  content: '▸';
+  display: inline-block;
+  font-size: .7rem;
+  transition: transform .2s ease;
+}
+
+.ticket-group-closed[open] summary.ticket-group-heading::before {
+  transform: rotate(90deg);
+}
+
+.ticket-group-count {
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.ticket-group-closed .ticket-list {
+  margin-top: 1rem;
+}
+
+.ticket-group-closed .ticket-card {
+  opacity: .82;
+}
+
 .ticket-list {
   display: flex;
   flex-direction: column;

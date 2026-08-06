@@ -104,6 +104,7 @@
 
       var data = new FormData(form);
       var payload = {
+        submittedBy: (data.get('submittedBy') || '').trim(),
         type: data.get('type'),
         app: data.get('app'),
         title: (data.get('title') || '').trim(),
@@ -114,8 +115,8 @@
         formLoadedAt: formLoadedAt
       };
 
-      if (!payload.title || !payload.description) {
-        setResult('error', 'Please fill in a title and description.');
+      if (!payload.submittedBy || !payload.title || !payload.description) {
+        setResult('error', 'Please fill in your name, a title, and description.');
         return;
       }
 
@@ -152,10 +153,16 @@
   }
 
   // ---------- Ticket list ----------
-  var listEl = document.getElementById('ticket-list');
+  var listOpenEl = document.getElementById('ticket-list-open');
+  var listClosedEl = document.getElementById('ticket-list-closed');
+  var closedGroupEl = document.getElementById('ticket-closed-group');
+  var closedCountEl = document.getElementById('ticket-closed-count');
+  var searchInput = document.getElementById('ticket-search');
   var filterButtons = document.querySelectorAll('.ticket-filter');
+  var OPEN_STATUSES = ['triage', 'in-progress'];
   var allTickets = [];
   var activeFilter = 'all';
+  var searchTerm = '';
 
   function formatDate(iso) {
     try {
@@ -165,35 +172,51 @@
     }
   }
 
+  function matchesSearch(t) {
+    if (!searchTerm) return true;
+    return (t.submittedBy || '').toLowerCase().indexOf(searchTerm) !== -1;
+  }
+
+  function renderCard(t) {
+    var typeBadge = '<span class="ticket-badge ticket-badge--' + t.type + '">' + (TYPE_LABELS[t.type] || t.type) + '</span>';
+    var statusBadge = '<span class="ticket-badge ticket-badge--status-' + t.status + '">' + (STATUS_LABELS[t.status] || t.status) + '</span>';
+    var appLabel = APP_LABELS[t.app] || t.app;
+    var byLabel = t.submittedBy ? ' · by ' + escapeHtml(t.submittedBy) : '';
+    var note = t.releaseNote
+      ? '<div class="ticket-card__note"><strong>Release note:</strong> ' + escapeHtml(t.releaseNote) + '</div>'
+      : '';
+
+    return '<a class="ticket-card" href="' + t.url + '" target="_blank" rel="noopener">' +
+      '<div class="ticket-card__header">' +
+      '<span class="ticket-card__title">' + escapeHtml(t.title) + '</span>' +
+      typeBadge + statusBadge +
+      '</div>' +
+      '<div class="ticket-card__meta">' + appLabel + ' · opened ' + formatDate(t.createdAt) + byLabel + '</div>' +
+      note +
+      '</a>';
+  }
+
   function renderTickets() {
-    if (!listEl) return;
+    if (!listOpenEl) return;
 
-    var tickets = activeFilter === 'all'
-      ? allTickets
-      : allTickets.filter(function (t) { return t.type === activeFilter; });
+    var filtered = allTickets.filter(function (t) {
+      if (activeFilter !== 'all' && t.type !== activeFilter) return false;
+      return matchesSearch(t);
+    });
 
-    if (tickets.length === 0) {
-      listEl.innerHTML = '<p class="ticket-list__state">No tickets here yet.</p>';
-      return;
+    var open = filtered.filter(function (t) { return OPEN_STATUSES.indexOf(t.status) !== -1; });
+    var closed = filtered.filter(function (t) { return OPEN_STATUSES.indexOf(t.status) === -1; });
+
+    listOpenEl.innerHTML = open.length
+      ? open.map(renderCard).join('')
+      : '<p class="ticket-list__state">' + (searchTerm || activeFilter !== 'all' ? 'No matching open tickets.' : 'No open tickets right now.') + '</p>';
+
+    if (closedGroupEl) {
+      closedCountEl.textContent = closed.length;
+      listClosedEl.innerHTML = closed.length
+        ? closed.map(renderCard).join('')
+        : '<p class="ticket-list__state">No matching closed tickets.</p>';
     }
-
-    listEl.innerHTML = tickets.map(function (t) {
-      var typeBadge = '<span class="ticket-badge ticket-badge--' + t.type + '">' + (TYPE_LABELS[t.type] || t.type) + '</span>';
-      var statusBadge = '<span class="ticket-badge ticket-badge--status-' + t.status + '">' + (STATUS_LABELS[t.status] || t.status) + '</span>';
-      var appLabel = APP_LABELS[t.app] || t.app;
-      var note = t.releaseNote
-        ? '<div class="ticket-card__note"><strong>Release note:</strong> ' + escapeHtml(t.releaseNote) + '</div>'
-        : '';
-
-      return '<a class="ticket-card" href="' + t.url + '" target="_blank" rel="noopener">' +
-        '<div class="ticket-card__header">' +
-        '<span class="ticket-card__title">' + escapeHtml(t.title) + '</span>' +
-        typeBadge + statusBadge +
-        '</div>' +
-        '<div class="ticket-card__meta">' + appLabel + ' · opened ' + formatDate(t.createdAt) + '</div>' +
-        note +
-        '</a>';
-    }).join('');
   }
 
   function escapeHtml(str) {
@@ -203,15 +226,15 @@
   }
 
   function loadTickets() {
-    if (!listEl) return;
+    if (!listOpenEl) return;
 
     if (!isConfigured()) {
-      listEl.innerHTML = '<p class="ticket-list__state">Live ticket list isn’t connected yet — see the ' +
+      listOpenEl.innerHTML = '<p class="ticket-list__state">Live ticket list isn’t connected yet — see the ' +
         '<a href="https://github.com/Dragonsniper43/Mod-Dashboard-Releases/issues" target="_blank" rel="noopener">GitHub tracker</a> directly.</p>';
       return;
     }
 
-    listEl.innerHTML = '<p class="ticket-list__state">Loading tickets…</p>';
+    listOpenEl.innerHTML = '<p class="ticket-list__state">Loading tickets…</p>';
 
     fetch(WORKER_BASE + '/api/tickets', { cache: 'no-store' })
       .then(function (res) { if (!res.ok) throw new Error('bad status'); return res.json(); })
@@ -221,9 +244,16 @@
         renderTickets();
       })
       .catch(function () {
-        listEl.innerHTML = '<p class="ticket-list__state">Couldn’t load tickets right now — see the ' +
+        listOpenEl.innerHTML = '<p class="ticket-list__state">Couldn’t load tickets right now — see the ' +
           '<a href="https://github.com/Dragonsniper43/Mod-Dashboard-Releases/issues" target="_blank" rel="noopener">GitHub tracker</a> directly.</p>';
       });
+  }
+
+  if (searchInput) {
+    searchInput.addEventListener('input', function () {
+      searchTerm = searchInput.value.trim().toLowerCase();
+      renderTickets();
+    });
   }
 
   filterButtons.forEach(function (btn) {

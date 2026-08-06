@@ -39,6 +39,11 @@
     <div class="ticket-form-card">
       <h2>Submit a ticket</h2>
       <form id="ticket-form" novalidate>
+        <div class="form-field">
+          <label for="ticket-name">Your name</label>
+          <input type="text" id="ticket-name" name="submittedBy" maxlength="60" placeholder="So you (and we) can find your ticket again" required>
+        </div>
+
         <div class="form-row">
           <div class="form-field">
             <label for="ticket-type">Type</label>
@@ -98,7 +103,7 @@
 
   <section class="ticket-section reveal" style="--i:2">
     <div class="ticket-list-header">
-      <h2>Open tickets</h2>
+      <h2>Tickets</h2>
       <div class="ticket-filters" role="tablist" aria-label="Filter tickets by type">
         <button type="button" class="ticket-filter is-active" data-filter="all" role="tab" aria-selected="true">All</button>
         <button type="button" class="ticket-filter" data-filter="bug" role="tab" aria-selected="false">Bugs</button>
@@ -106,9 +111,19 @@
       </div>
     </div>
 
-    <div id="ticket-list" class="ticket-list" aria-live="polite">
+    <div class="ticket-search">
+      <input type="search" id="ticket-search" placeholder="Find your tickets by name…" aria-label="Find your tickets by name">
+    </div>
+
+    <h3 class="ticket-group-heading">Open</h3>
+    <div id="ticket-list-open" class="ticket-list" aria-live="polite">
       <p class="ticket-list__state">Loading tickets…</p>
     </div>
+
+    <details class="ticket-group-closed" id="ticket-closed-group">
+      <summary class="ticket-group-heading">Closed <span class="ticket-group-count" id="ticket-closed-count"></span></summary>
+      <div id="ticket-list-closed" class="ticket-list"></div>
+    </details>
   </section>
 
 </main>
