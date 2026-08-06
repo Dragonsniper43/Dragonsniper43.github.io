@@ -25,6 +25,7 @@
   var imageInput = document.getElementById('ticket-image');
   var imageHint = document.getElementById('ticket-image-hint');
 
+  var MAX_IMAGES = 4;
   var MAX_IMAGE_BYTES = 5 * 1024 * 1024;
   var ALLOWED_IMAGE_TYPES = ['image/png', 'image/jpeg', 'image/webp', 'image/gif'];
 
@@ -49,37 +50,46 @@
 
   if (imageInput) {
     imageInput.addEventListener('change', function () {
-      var file = imageInput.files[0];
-      if (!file) {
+      var files = Array.prototype.slice.call(imageInput.files);
+      if (files.length === 0) {
         setImageHint(null, '');
         return;
       }
-      if (ALLOWED_IMAGE_TYPES.indexOf(file.type) === -1) {
-        setImageHint('error', 'Unsupported file type — use PNG, JPEG, WEBP or GIF.');
+      if (files.length > MAX_IMAGES) {
+        setImageHint('error', 'Too many files — max ' + MAX_IMAGES + '.');
         imageInput.value = '';
         return;
       }
-      if (file.size > MAX_IMAGE_BYTES) {
-        setImageHint('error', 'That file is too large — max 5MB.');
-        imageInput.value = '';
-        return;
+      for (var i = 0; i < files.length; i++) {
+        if (ALLOWED_IMAGE_TYPES.indexOf(files[i].type) === -1) {
+          setImageHint('error', 'Unsupported file type — use PNG, JPEG, WEBP or GIF.');
+          imageInput.value = '';
+          return;
+        }
+        if (files[i].size > MAX_IMAGE_BYTES) {
+          setImageHint('error', files[i].name + ' is too large — max 5MB each.');
+          imageInput.value = '';
+          return;
+        }
       }
-      setImageHint(null, file.name + ' (' + Math.round(file.size / 1024) + ' KB)');
+      var totalKb = Math.round(files.reduce(function (sum, f) { return sum + f.size; }, 0) / 1024);
+      setImageHint(null, files.length + (files.length === 1 ? ' file' : ' files') + ' selected (' + totalKb + ' KB)');
     });
   }
 
-  // Resolves to a data: URL for the selected screenshot, or null if none was
-  // chosen. The Worker expects the image inline as base64 JSON rather than a
-  // separate upload step.
-  function readSelectedImage() {
-    var file = imageInput && imageInput.files[0];
-    if (!file) return Promise.resolve(null);
-    return new Promise(function (resolve, reject) {
-      var reader = new FileReader();
-      reader.onload = function () { resolve(reader.result); };
-      reader.onerror = function () { reject(new Error('image read failed')); };
-      reader.readAsDataURL(file);
-    });
+  // Resolves to an array of data: URLs for the selected screenshots (empty
+  // if none chosen). The Worker expects images inline as base64 JSON rather
+  // than a separate upload step.
+  function readSelectedImages() {
+    var files = imageInput ? Array.prototype.slice.call(imageInput.files) : [];
+    return Promise.all(files.map(function (file) {
+      return new Promise(function (resolve, reject) {
+        var reader = new FileReader();
+        reader.onload = function () { resolve(reader.result); };
+        reader.onerror = function () { reject(new Error('image read failed')); };
+        reader.readAsDataURL(file);
+      });
+    }));
   }
 
   if (form) {
@@ -112,9 +122,9 @@
       submitBtn.disabled = true;
       setResult(null, 'Submitting…');
 
-      readSelectedImage()
-        .then(function (imageDataUrl) {
-          if (imageDataUrl) payload.image = imageDataUrl;
+      readSelectedImages()
+        .then(function (imageDataUrls) {
+          if (imageDataUrls.length) payload.images = imageDataUrls;
           return fetch(WORKER_BASE + '/api/tickets', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
