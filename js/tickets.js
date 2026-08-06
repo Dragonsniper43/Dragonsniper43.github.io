@@ -48,6 +48,48 @@
     }
   }
 
+  // ---------- "Find my tickets" (browser-local memory of past submissions) ----------
+  var MINE_STORAGE_KEY = 'ticket_mine';
+  var MAX_MINE_ENTRIES = 20;
+  var findMineBtn = document.getElementById('ticket-find-mine');
+
+  function loadMineEntries() {
+    try {
+      var raw = window.localStorage.getItem(MINE_STORAGE_KEY);
+      var parsed = raw ? JSON.parse(raw) : [];
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function rememberMine(number, name) {
+    try {
+      var entries = loadMineEntries();
+      entries.unshift({ number: number, name: name });
+      window.localStorage.setItem(MINE_STORAGE_KEY, JSON.stringify(entries.slice(0, MAX_MINE_ENTRIES)));
+    } catch (e) {
+      // localStorage unavailable (private mode, disabled, quota) — skip silently
+    }
+    updateFindMineButton();
+  }
+
+  function updateFindMineButton() {
+    if (!findMineBtn) return;
+    findMineBtn.hidden = loadMineEntries().length === 0;
+  }
+
+  if (findMineBtn) {
+    findMineBtn.addEventListener('click', function () {
+      var entries = loadMineEntries();
+      if (!entries.length) return;
+      searchTerm = (entries[0].name || '').toLowerCase();
+      if (searchInput) searchInput.value = entries[0].name || '';
+      renderTickets();
+    });
+    updateFindMineButton();
+  }
+
   if (imageInput) {
     imageInput.addEventListener('change', function () {
       var files = Array.prototype.slice.call(imageInput.files);
@@ -137,13 +179,15 @@
           if (!result.ok || !result.body || !result.body.ok) {
             throw new Error((result.body && result.body.error) || 'submit failed');
           }
+          rememberMine(result.body.issueNumber, payload.submittedBy);
           form.reset();
           setImageHint(null, '');
           setResult('success', 'Thanks — ticket #' + result.body.issueNumber + ' filed. Save that number to find it again — it’ll show up in the list below shortly.');
           loadTickets();
         })
-        .catch(function () {
-          setResult('error', 'Something went wrong submitting that. Please try again in a moment.');
+        .catch(function (err) {
+          var message = err && err.message;
+          setResult('error', message || 'Something went wrong submitting that. Please try again in a moment.');
         })
         .finally(function () {
           submitBtn.disabled = false;
@@ -158,11 +202,29 @@
   var closedGroupEl = document.getElementById('ticket-closed-group');
   var closedCountEl = document.getElementById('ticket-closed-count');
   var searchInput = document.getElementById('ticket-search');
+  var updatedEl = document.getElementById('ticket-updated');
   var filterButtons = document.querySelectorAll('.ticket-filter');
   var OPEN_STATUSES = ['triage', 'in-progress'];
   var allTickets = [];
   var activeFilter = 'all';
   var searchTerm = '';
+  var lastUpdatedAt = null;
+
+  function renderUpdatedCaption() {
+    if (!updatedEl) return;
+    if (!lastUpdatedAt) {
+      updatedEl.textContent = '';
+      return;
+    }
+    var seconds = Math.round((Date.now() - lastUpdatedAt.getTime()) / 1000);
+    if (seconds < 45) {
+      updatedEl.textContent = 'Updated just now';
+    } else if (seconds < 3600) {
+      updatedEl.textContent = 'Updated ' + Math.round(seconds / 60) + 'm ago';
+    } else {
+      updatedEl.textContent = 'Updated ' + Math.round(seconds / 3600) + 'h ago';
+    }
+  }
 
   function formatDate(iso) {
     try {
@@ -174,7 +236,9 @@
 
   function matchesSearch(t) {
     if (!searchTerm) return true;
-    return (t.submittedBy || '').toLowerCase().indexOf(searchTerm) !== -1;
+    if ((t.submittedBy || '').toLowerCase().indexOf(searchTerm) !== -1) return true;
+    var term = searchTerm.charAt(0) === '#' ? searchTerm.slice(1) : searchTerm;
+    return String(t.number) === term;
   }
 
   function renderCard(t) {
@@ -182,6 +246,7 @@
     var statusBadge = '<span class="ticket-badge ticket-badge--status-' + t.status + '">' + (STATUS_LABELS[t.status] || t.status) + '</span>';
     var appLabel = APP_LABELS[t.app] || t.app;
     var byLabel = t.submittedBy ? ' · by ' + escapeHtml(t.submittedBy) : '';
+    var imagesLabel = t.imageCount ? ' · 🖼 ' + t.imageCount : '';
     var note = t.releaseNote
       ? '<div class="ticket-card__note"><strong>Release note:</strong> ' + escapeHtml(t.releaseNote) + '</div>'
       : '';
@@ -192,7 +257,7 @@
       '<span class="ticket-card__title">' + escapeHtml(t.title) + '</span>' +
       typeBadge + statusBadge +
       '</div>' +
-      '<div class="ticket-card__meta">' + appLabel + ' · opened ' + formatDate(t.createdAt) + byLabel + '</div>' +
+      '<div class="ticket-card__meta">' + appLabel + ' · opened ' + formatDate(t.createdAt) + byLabel + imagesLabel + '</div>' +
       note +
       '</a>';
   }
@@ -242,6 +307,8 @@
       .then(function (body) {
         if (!body.ok) throw new Error('bad response');
         allTickets = body.tickets || [];
+        lastUpdatedAt = body.cachedAt ? new Date(body.cachedAt) : new Date();
+        renderUpdatedCaption();
         renderTickets();
       })
       .catch(function () {
@@ -292,6 +359,10 @@
       startPolling();
     }
   });
+
+  // Keeps the "Updated Xm ago" caption ticking over between polls, not just
+  // right after a fetch.
+  setInterval(renderUpdatedCaption, 20000);
 
   loadTickets();
   if (!document.hidden) startPolling();

@@ -7,7 +7,7 @@
 <meta name="description" content="Report a bug or request a change for StreamMod or Cuelist, and track ticket status and release notes.">
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="stylesheet" href="css/style.css?v=3">
-<link rel="stylesheet" href="css/tickets.css?v=3">
+<link rel="stylesheet" href="css/tickets.css?v=4">
 </head>
 <body>
 
@@ -64,7 +64,7 @@
 
         <div class="form-field">
           <label for="ticket-title">Title</label>
-          <input type="text" id="ticket-title" name="title" maxlength="120" placeholder="Short summary of the issue or request" required>
+          <input type="text" id="ticket-title" name="title" maxlength="200" placeholder="Short summary of the issue or request" required>
         </div>
 
         <div class="form-field">
@@ -103,7 +103,10 @@
 
   <section class="ticket-section reveal" style="--i:2">
     <div class="ticket-list-header">
-      <h2>Tickets</h2>
+      <div class="ticket-list-heading">
+        <h2>Tickets</h2>
+        <span class="ticket-updated" id="ticket-updated"></span>
+      </div>
       <div class="ticket-filters" role="tablist" aria-label="Filter tickets by type">
         <button type="button" class="ticket-filter is-active" data-filter="all" role="tab" aria-selected="true">All</button>
         <button type="button" class="ticket-filter" data-filter="bug" role="tab" aria-selected="false">Bugs</button>
@@ -112,7 +115,8 @@
     </div>
 
     <div class="ticket-search">
-      <input type="search" id="ticket-search" placeholder="Find your tickets by name…" aria-label="Find your tickets by name">
+      <input type="search" id="ticket-search" placeholder="Find your tickets by name or number…" aria-label="Find your tickets by name or number">
+      <button type="button" class="ticket-find-mine" id="ticket-find-mine" hidden>Find my tickets</button>
     </div>
 
     <h3 class="ticket-group-heading">Open</h3>
@@ -141,6 +145,6 @@
 
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <script src="js/main.js?v=9"></script>
-<script src="js/tickets.js?v=3"></script>
+<script src="js/tickets.js?v=4"></script>
 </body>
 </html>

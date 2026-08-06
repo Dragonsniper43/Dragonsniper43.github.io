@@ -139,6 +139,19 @@
   font-size: 1.15rem;
 }
 
+.ticket-list-heading {
+  display: flex;
+  align-items: baseline;
+  gap: .6rem;
+  flex-wrap: wrap;
+}
+
+.ticket-updated {
+  font-size: .78rem;
+  font-weight: 400;
+  color: var(--text-dim);
+}
+
 .ticket-filters {
   display: flex;
   gap: .5rem;
@@ -165,11 +178,15 @@
 }
 
 .ticket-search {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
   margin-bottom: 1.5rem;
 }
 
 .ticket-search input[type="search"] {
-  width: 100%;
+  flex: 1;
+  min-width: 0;
   background: var(--bg-elevated);
   border: 1px solid var(--border);
   border-radius: 10px;
@@ -183,6 +200,29 @@
 .ticket-search input[type="search"]:focus {
   outline: none;
   border-color: var(--accent-cuelist);
+}
+
+.ticket-find-mine {
+  flex-shrink: 0;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  border-radius: 999px;
+  padding: .55rem 1rem;
+  font-size: .82rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color .2s ease, border-color .2s ease;
+}
+
+.ticket-find-mine:hover {
+  color: var(--text);
+  border-color: rgba(231, 233, 238, .18);
+}
+
+.ticket-find-mine[hidden] {
+  display: none;
 }
 
 .ticket-group-heading {
